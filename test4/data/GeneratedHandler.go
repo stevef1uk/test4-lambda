@@ -154,11 +154,13 @@ func InsertNew(params * models.Verysimple) (string, bool ) {
     ret := true
 	m := make(map[string]interface{})
 	fmt.Println(" In InsertNew code! ")
-	fmt.Println(" Params = %v ", *params)
+	fmt.Println(" id:  %d", params.ID)
+	fmt.Println(" message:  %s", params.Message)
 
 	m["id"] = params.ID
 	m["message"] = params.Message
-	if err := cassuservice_session.Query(` INSERT INTO verysimple(id, message) VALUES (?,?)`,m["id"],m["message"]).Consistency(gocql.One).Exec(); err != nil {
+	if err := cassuservice_session.Query(` INSERT INTO verysimple(id, message) VALUES (?,?)`,m["id"],m["message"]).Consistency(gocql.LocalQuorum).Exec(); err != nil {
+		fmt.Println(" Insert Error = %s ", err.Error())
 		return err.Error(), false
 	}
 	return "Ok", ret
