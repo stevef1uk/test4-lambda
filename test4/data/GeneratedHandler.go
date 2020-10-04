@@ -149,3 +149,17 @@ func Insert(params verysimple.AddVerysimpleParams) middleware.Responder {
     }
     return verysimple.NewAddVerysimpleCreated()
 }
+
+func InsertNew(params * models.Verysimple) (string, bool ) {
+    ret := true
+	m := make(map[string]interface{})
+	fmt.Println(" In InsertNew code! ")
+	fmt.Println(" Params = %v ", *params)
+
+	m["id"] = params.ID
+	m["message"] = params.Message
+	if err := cassuservice_session.Query(` INSERT INTO verysimple(id, message) VALUES (?,?)`,m["id"],m["message"]).Consistency(gocql.One).Exec(); err != nil {
+		return err.Error(), false
+	}
+	return "Ok", ret
+}
