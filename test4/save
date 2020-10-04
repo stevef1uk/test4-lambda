@@ -1,0 +1,1 @@
+CASSANDRA_SERVICE_HOST=744f0cbd-0c29-4980-8260-c5a2f9a99c97-europe-west1.apps.astra.datastax.com;PORT=5000;CASSANDRA_PASSWORD=Insecure01$!;CASSANDRA_USERNAME=stevef1uk;ASTRA_SECURE_CONNECT_PATH=/Users/stevef/Downloads/secure-connect-sjftest;ASTRA_PORT=31234

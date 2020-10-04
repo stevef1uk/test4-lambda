@@ -1,0 +1,68 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Simple API
+  description: A generated file representing a Cassandra Table definition
+schemes:
+  - http
+host: localhost
+basePath: /v1
+paths:
+  /verysimple:
+    get: 
+      summary: Retrieve some records from the Cassandra table 
+      description: Returns rows from the Cassandra table
+      parameters:
+        - name: id
+          in: query
+          description: Primary Key field in Table
+          required: true
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: A list of records
+          schema:
+            type: array
+            items:
+              required:
+                - id
+                - message
+              properties:
+                 id:
+                   type: integer
+                 message:
+                   type: string
+        400: 
+          description: Record not found
+        default:
+          description: Sorry unexpected error
+    post: 
+      tags:
+      - "Verysimple" 
+      summary: Add a new record to the Cassandra table 
+      description: Adds or updates a row in the Cassandra table
+      operationId: addVerysimple
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: The fields of the table that needs to be populates in JSON form
+          required: true
+          schema:
+            $ref: '#/definitions/Verysimple'
+      responses:
+        '201':
+          description: Record created
+        '405':
+          description: Invalid input
+definitions:
+  Verysimple:
+    properties:
+      id:
+        type: integer
+      message:
+        type: string

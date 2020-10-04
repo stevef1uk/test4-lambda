@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-app
+  
+  Sample SAM Template for sam-app
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 5
+
+Resources:
+  Test4Function:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: test4/
+      Handler: test4
+      Runtime: go1.x
+      Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
+      Policies:
+      - AmazonS3ReadOnlyAccess
+      Events:
+        CatchAll:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /v1/verysimple
+            Method: GET
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          #CASSANDRA_SERVICE_HOST: !Sub '{{resolve:ssm:CASSANDRA_HOST:1}}'
+          CASSANDRA_SERVICE_HOST: !Sub '{{resolve:secretsmanager:Astra1:SecretString:CASSANDRA_SERVICE_HOST}}'
+          CASSANDRA_USERNAME: !Sub '{{resolve:secretsmanager:Astra1:SecretString:CASSANDRA_USERNAME}}'
+          ASTRA_PORT: !Sub '{{resolve:secretsmanager:Astra1:SecretString:ASTRA_PORT}}'
+          CASSANDRA_PASSWORD: !Sub '{{resolve:secretsmanager:Astra1:SecretString:CASSANDRA_PASSWORD}}'
+          ASTRA_SECURE_CONNECT_PATH: !Sub '{{resolve:secretsmanager:Astra1:SecretString:ASTRA_SECURE_CONNECT_PATH}}'
+          PORT:
+            5000
+          HOST:
+            '0.0.0.0'
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  Test4API:
+    Description: "API Gateway endpoint URL for Prod environment for First Function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/v1/verysimple/"
+  Test4Function:
+    Description: "First Lambda Function ARN"
+    Value: !GetAtt Test4Function.Arn
+  Test4FunctionIamRole:
+    Description: "Implicit IAM Role created for test4 World function"
+    Value: !GetAtt Test4FunctionRole.Arn
