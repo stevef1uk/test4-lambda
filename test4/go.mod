@@ -14,5 +14,5 @@ require (
 	github.com/go-openapi/validate v0.19.11
 	github.com/gocql/gocql v0.0.0-20200926162733-393f0c961220
 	github.com/jessevdk/go-flags v1.4.0
-	golang.org/x/net v0.0.0-20201002202402-0a1ea396d57c
+	golang.org/x/net v0.7.0
 )
